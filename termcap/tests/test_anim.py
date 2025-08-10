@@ -8,11 +8,11 @@ from collections import namedtuple
 import pyte.screens
 from lxml import etree
 
-from termtosvg import anim
-from termtosvg import term
+from termcap import anim
+from termcap import term
 
 
-TEMPLATE = pkgutil.get_data('termtosvg', '/data/templates/gjm8.svg')
+TEMPLATE = pkgutil.get_data('termcap', 'data/templates/gjm8.svg')
 
 
 def line(i):

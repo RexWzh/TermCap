@@ -3,16 +3,16 @@
 from setuptools import setup
 
 setup(
-    name='termtosvg',
+    name='termcap',
     version='1.1.0',
     license='BSD 3-clause license',
-    author='Nicolas Bedos',
-    author_email='nicolas.bedos@gmail.com',
-    description='Record terminal sessions as SVG animations',
+    author='rexwzh',
+    author_email='1073853456@qq.com',
+    description='Terminal capture tool - Record terminal sessions as SVG animations',
     long_description='A Linux terminal recorder written in Python '
                      'which renders your command line sessions as '
                      'standalone SVG animations.',
-    url='https://github.com/nbedos/termtosvg',
+    url='https://github.com/rexwzh/termcap',
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: Developers',
@@ -29,10 +29,10 @@ setup(
     ],
     python_requires='>=3.5',
     packages=[
-        'termtosvg',
-        'termtosvg.tests'
+        'termcap',
+        'termcap.tests'
     ],
-    scripts=['scripts/termtosvg'],
+    scripts=['scripts/termcap'],
     include_package_data=True,
     install_requires=[
         'lxml',

@@ -1,6 +1,6 @@
 import unittest
 
-import termtosvg.config as config
+import termcap.config as config
 
 
 class TestConf(unittest.TestCase):

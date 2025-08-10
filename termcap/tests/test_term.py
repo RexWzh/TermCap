@@ -6,9 +6,9 @@ from unittest.mock import MagicMock, patch
 
 import pyte
 
-import termtosvg.anim as anim
-from termtosvg import term
-from termtosvg.asciicast import AsciiCastV2Event, AsciiCastV2Header, AsciiCastV2Theme
+import termcap.anim as anim
+from termcap import term
+from termcap.asciicast import AsciiCastV2Event, AsciiCastV2Header, AsciiCastV2Theme
 
 commands = [
     'echo $SHELL && sleep 0.1;\r\n',

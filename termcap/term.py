@@ -26,8 +26,8 @@ from typing import Iterator
 import pyte
 import pyte.screens
 
-from termtosvg import anim
-from termtosvg.asciicast import AsciiCastV2Event, AsciiCastV2Header
+from termcap import anim
+from termcap.asciicast import AsciiCastV2Event, AsciiCastV2Header
 
 TimedFrame = namedtuple('TimedFrame', ['time', 'duration', 'buffer'])
 

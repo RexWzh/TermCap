@@ -1,6 +1,6 @@
 import unittest
 
-from termtosvg.asciicast import AsciiCastV2Header, AsciiCastV2Event, AsciiCastV2Record, \
+from termcap.asciicast import AsciiCastV2Header, AsciiCastV2Event, AsciiCastV2Record, \
                                 AsciiCastV2Theme, AsciiCastError, _read_v1_records
 
 

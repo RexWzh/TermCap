@@ -4,8 +4,8 @@ import tempfile
 import time
 import unittest
 
-import termtosvg.main
-import termtosvg.config
+import termcap.main
+import termcap.config
 
 SHELL_INPUT = [
     'echo $SHELL && sleep 0.1;\r\n',
@@ -62,7 +62,7 @@ class TestMain(unittest.TestCase):
     def test_parse(self):
         for args in self.test_cases:
             with self.subTest(case=args):
-                cmd, parsed_args = termtosvg.main.parse(
+                cmd, parsed_args = termcap.main.parse(
                     args=args,
                     templates={'plain': b''},
                     default_template='plain',
@@ -87,78 +87,78 @@ class TestMain(unittest.TestCase):
                 time.sleep(0.060)
             os._exit(0)
 
-        termtosvg.main.main(args, fd_in_read, fd_out_write)
+        termcap.main.main(args, fd_in_read, fd_out_write)
 
         os.waitpid(pid, 0)
         for fd in fd_in_read, fd_in_write, fd_out_read, fd_out_write:
             os.close(fd)
 
     def test_main(self):
-        _, cast_filename = tempfile.mkstemp(prefix='termtosvg_', suffix='.cast')
+        _, cast_filename = tempfile.mkstemp(prefix='termcap_', suffix='.cast')
         svg_filename = cast_filename[:-5] + '.svg'
 
         with self.subTest(case='record (no filename)'):
-            args = ['termtosvg', 'record']
+            args = ['termcap', 'record']
             TestMain.run_main(args, SHELL_INPUT)
 
         with self.subTest(case='record (with filename)'):
-            args = ['termtosvg', 'record', cast_filename]
+            args = ['termcap', 'record', cast_filename]
             TestMain.run_main(args, SHELL_INPUT)
 
         with self.subTest(case='record (with geometry)'):
-            args = ['termtosvg', 'record', '--screen-geometry', '82x19']
+            args = ['termcap', 'record', '--screen-geometry', '82x19']
             TestMain.run_main(args, SHELL_INPUT)
 
         with self.subTest(case='record (with command)'):
-            args = ['termtosvg', 'record', '-c', 'date']
+            args = ['termcap', 'record', '-c', 'date']
             TestMain.run_main(args, [])
 
         with self.subTest(case='render (no output filename)'):
-            args = ['termtosvg', 'render', cast_filename]
+            args = ['termcap', 'render', cast_filename]
             TestMain.run_main(args, [])
 
         with self.subTest(case='render (with output filename)'):
-            args = ['termtosvg', 'render', cast_filename, svg_filename]
+            args = ['termcap', 'render', cast_filename, svg_filename]
             TestMain.run_main(args, [])
 
         with self.subTest(case='render (with delay)'):
-            args = ['termtosvg', 'render', cast_filename, '-D', '1234']
+            args = ['termcap', 'render', cast_filename, '-D', '1234']
             TestMain.run_main(args, [])
 
         with self.subTest(case='render (with template)'):
-            args = ['termtosvg', 'render', cast_filename, '--template', 'window_frame']
+            args = ['termcap', 'render', cast_filename, '--template', 'window_frame']
             TestMain.run_main(args, [])
 
         with self.subTest(case='render (still frames)'):
-            args = ['termtosvg', 'render', cast_filename, '--still-frames']
+            args = ['termcap', 'render', cast_filename, '--still-frames']
             TestMain.run_main(args, [])
 
         with self.subTest(case='render (still frames with output directory)'):
             # Existing directory
-            output_path = tempfile.mkdtemp(prefix='termtosvg')
-            args = ['termtosvg', 'render', cast_filename, output_path, '-s']
+            output_path = tempfile.mkdtemp(prefix='termcap')
+            args = ['termcap', 'render', cast_filename, output_path, '-s']
             TestMain.run_main(args, [])
 
             # Non existing directory
             shutil.rmtree(output_path)
-            args = ['termtosvg', 'render', cast_filename, output_path, '-s']
+            args = ['termcap', 'render', cast_filename, output_path, '-s']
             TestMain.run_main(args, [])
 
         with self.subTest(case='record and render custom command'):
-            args = ['termtosvg', '--command', 'ls']
+            args = ['termcap', '--command', 'ls']
             TestMain.run_main(args, [])
 
         with self.subTest(case='record and render on the fly (fallback theme)'):
-            args = ['termtosvg', '--screen-geometry', '82x19']
+            args = ['termcap', '--screen-geometry', '82x19']
             TestMain.run_main(args, SHELL_INPUT)
 
         with self.subTest(case='record and render on the fly (window_frame_js template)'):
-            args = ['termtosvg', svg_filename, '--template', 'window_frame_js']
+            args = ['termcap', svg_filename, '--template', 'window_frame_js']
             TestMain.run_main(args, SHELL_INPUT)
 
-        for template in termtosvg.config.default_templates():
+        for template in termcap.config.default_templates():
             with self.subTest(case='record and render on the fly ({} template)'.format(template)):
-                args = ['termtosvg', '-t', template]
+                args = ['termcap', '-t', template]
                 TestMain.run_main(args, SHELL_INPUT)
 
         cast_v1_data = '\r\n'.join([
@@ -179,11 +179,11 @@ class TestMain(unittest.TestCase):
         ])
 
         with self.subTest(case='render v1 cast file'):
-            _, cast_filename_v1 = tempfile.mkstemp(prefix='termtosvg_', suffix='.cast')
+            _, cast_filename_v1 = tempfile.mkstemp(prefix='termcap_', suffix='.cast')
             with open(cast_filename_v1, 'w') as cast_file:
                 cast_file.write(cast_v1_data)
 
-            args = ['termtosvg', 'render', cast_filename_v1, svg_filename]
+            args = ['termcap', 'render', cast_filename_v1, svg_filename]
             TestMain.run_main(args, [])
 
     def test_integral_duration(self):
@@ -195,7 +195,7 @@ class TestMain(unittest.TestCase):
         for case in test_cases:
             with self.subTest(case=case):
                 self.assertEqual(
-                    termtosvg.main.integral_duration_validation(case),
+                    termcap.main.integral_duration_validation(case),
                     100
                 )
 

@@ -1,4 +1,4 @@
-"""Command line interface of termtosvg"""
+"""Command line interface of termcap"""
 
 import argparse
 import logging
@@ -8,21 +8,21 @@ import sys
 import tempfile
 import pkg_resources
 
-import termtosvg.config
-import termtosvg.anim
+import termcap.config
+import termcap.anim
 
-logger = logging.getLogger('termtosvg')
+logger = logging.getLogger('termcap')
 
 DEFAULT_LOOP_DELAY = 1000
 
-USAGE = """termtosvg [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY]
+USAGE = """termcap [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY]
                  [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [-h]
 
 Record a terminal session and render an SVG animation on the fly
 """
-EPILOG = "See also 'termtosvg record --help' and 'termtosvg render --help'"
-RECORD_USAGE = "termtosvg record [output_path] [-c COMMAND] [-g GEOMETRY] [-h]"
-RENDER_USAGE = """termtosvg render input_file [output_path] [-D DELAY]
+EPILOG = "See also 'termcap record --help' and 'termcap render --help'"
+RECORD_USAGE = "termcap record [output_path] [-c COMMAND] [-g GEOMETRY] [-h]"
+RENDER_USAGE = """termcap render input_file [output_path] [-D DELAY]
                  [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [-h]"""
 
 
@@ -64,7 +64,7 @@ def parse(args, templates, default_template, default_geometry, default_min_dur,
         '-v', '--version',
         action='version',
         version='%(prog)s {}'.format(
-            pkg_resources.require('termtosvg')[0].version
+            pkg_resources.require('termcap')[0].version
         )
     )
 
@@ -89,7 +89,7 @@ def parse(args, templates, default_template, default_geometry, default_min_dur,
         help=('set the SVG template used for rendering the SVG animation. '
               'TEMPLATE may either be one of the default templates ({}) '
               'or a path to a valid template.').format(', '.join(templates)),
-        type=lambda name: termtosvg.anim.validate_template(name, templates),
+        type=lambda name: termcap.anim.validate_template(name, templates),
         default=default_template,
         metavar='TEMPLATE'
     )
@@ -102,7 +102,7 @@ def parse(args, templates, default_template, default_geometry, default_min_dur,
              'For example "82x19" for an 82 columns by 19 rows screen.',
         metavar='GEOMETRY',
         default=default_geometry,
-        type=termtosvg.config.validate_geometry
+        type=termcap.config.validate_geometry
     )
     min_duration_parser = argparse.ArgumentParser(add_help=False)
     min_duration_parser.add_argument(
@@ -141,7 +141,7 @@ def parse(args, templates, default_template, default_geometry, default_min_dur,
     )
 
     parser = argparse.ArgumentParser(
-        prog='termtosvg',
+        prog='termcap',
         parents=[command_parser, loop_delay_parser, geometry_parser, min_duration_parser,
                  max_duration_parser, still_frames_parser, template_parser],
         usage=USAGE,
@@ -200,7 +200,7 @@ def parse(args, templates, default_template, default_geometry, default_min_dur,
 def record_subcommand(process_args, geometry, input_fileno, output_fileno,
                       cast_filename):
     """Save a terminal session as an asciicast recording"""
-    from termtosvg.term import get_terminal_size, TerminalMode, record
+    from termcap.term import get_terminal_size, TerminalMode, record
     logger.info('Recording started, enter "exit" command or Control-D to end')
     if geometry is None:
         columns, lines = get_terminal_size(output_fileno)
@@ -221,22 +221,22 @@ def record_subcommand(process_args, geometry, input_fileno, output_fileno,
 def render_subcommand(still, template, cast_filename, output_path,
                       min_frame_duration, max_frame_duration, loop_delay):
     """Render the animation from an asciicast recording"""
-    from termtosvg.asciicast import read_records
-    from termtosvg.term import timed_frames
+    from termcap.asciicast import read_records
+    from termcap.term import timed_frames
 
     logger.info('Rendering started')
     asciicast_records = read_records(cast_filename)
     geometry, frames = timed_frames(asciicast_records, min_frame_duration,
                                     max_frame_duration, loop_delay)
     if still:
-        termtosvg.anim.render_still_frames(frames=frames,
+        termcap.anim.render_still_frames(frames=frames,
                                            geometry=geometry,
                                            directory=output_path,
                                            template=template)
         logger.info('Rendering ended, SVG frames are located at {}'
                     .format(output_path))
     else:
-        termtosvg.anim.render_animation(frames=frames,
+        termcap.anim.render_animation(frames=frames,
                                         geometry=geometry,
                                         filename=output_path,
                                         template=template)
@@ -248,7 +248,7 @@ def record_render_subcommand(process_args, still, template, geometry,
                              min_frame_duration, max_frame_duration,
                              loop_delay):
     """Record and render the animation on the fly"""
-    from termtosvg.term import get_terminal_size, TerminalMode, record, timed_frames
+    from termcap.term import get_terminal_size, TerminalMode, record, timed_frames
 
     logger.info('Recording started, enter "exit" command or Control-D to end')
     if geometry is None:
@@ -265,11 +265,11 @@ def record_render_subcommand(process_args, still, template, geometry,
                                         max_frame_duration, loop_delay)
 
         if still:
-            termtosvg.anim.render_still_frames(frames, geometry, output_path,
+            termcap.anim.render_still_frames(frames, geometry, output_path,
                                                template)
             end_msg = 'Rendering ended, SVG frames are located at {}'
         else:
-            termtosvg.anim.render_animation(frames, geometry, output_path,
+            termcap.anim.render_animation(frames, geometry, output_path,
                                             template)
             end_msg = 'Rendering ended, SVG animation is {}'
 
@@ -291,7 +291,7 @@ def main(args=None, input_fileno=None, output_fileno=None):
     logger.handlers = [console_handler]
     logger.setLevel(logging.INFO)
 
-    templates = termtosvg.config.default_templates()
+    templates = termcap.config.default_templates()
     default_template = 'powershell'
     default_cmd = os.environ.get('SHELL', 'sh')
     command, args = parse(args[1:], templates, default_template, None, 1,
