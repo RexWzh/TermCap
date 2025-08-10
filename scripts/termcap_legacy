@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import termcap.cli
+import termcap.main
 
 if __name__ == '__main__':
-    termcap.cli.main()
+    termtosvg.main.main()
