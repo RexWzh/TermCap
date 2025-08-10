@@ -1,6 +1,6 @@
 # termcap - Terminal Capture Tool
 
-*A modern Python package for recording terminal sessions as SVG animations, based on the original termtosvg project.*
+*A modern Python package for recording terminal sessions as SVG animations, based on the original [termtosvg project](https://github.com/nbedos/termtosvg).*
 
 ## Overview
 
@@ -177,7 +177,7 @@ BSD 3-clause license (same as original termtosvg)
 
 ## Changelog
 
-### Version 1.1.0
+### Version 0.1.0
 
 - ✅ Rebranded as termcap
 - ✅ Added click-based modern CLI interface
