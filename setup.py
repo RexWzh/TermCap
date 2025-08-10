@@ -38,6 +38,9 @@ setup(
         'lxml',
         'pyte',
         'wcwidth',
+        'click',
+        'platformdirs',
+        'toml',
     ],
     extras_require={
         'dev': [
