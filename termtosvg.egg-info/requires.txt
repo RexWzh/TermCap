@@ -1,9 +1,0 @@
-lxml
-pyte
-wcwidth
-
-[dev]
-coverage
-pylint
-twine
-wheel
