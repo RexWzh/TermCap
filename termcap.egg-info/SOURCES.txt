@@ -3,17 +3,13 @@ MANIFEST.in
 README.md
 setup.py
 scripts/termcap
-scripts/termcap_legacy
 termcap/__init__.py
-termcap/__main__.py
 termcap/anim.py
 termcap/asciicast.py
 termcap/cli.py
 termcap/cli_config.py
-termcap/config.py
 termcap/config_dirs.py
 termcap/config_manager.py
-termcap/main.py
 termcap/term.py
 termcap.egg-info/PKG-INFO
 termcap.egg-info/SOURCES.txt

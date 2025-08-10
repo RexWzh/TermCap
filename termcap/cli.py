@@ -7,8 +7,6 @@ from pathlib import Path
 
 from .config_manager import get_config_manager
 from .cli_config import show_config, list_templates, reset_config
-from . import config as old_config
-from . import main as old_main
 
 
 def get_default_settings():
