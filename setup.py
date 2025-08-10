@@ -4,8 +4,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='termcap',
-    version='0.1.0',
-    license='BSD 3-clause license',
+    version='0.1.1',
+    license='MIT License',  # 更新为MIT
     author='rexwzh',
     author_email='1073853456@qq.com',
     description='Terminal capture tool - Record terminal sessions as SVG animations',
@@ -16,7 +16,8 @@ setup(
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',  # 更新为MIT
+        'License :: OSI Approved :: BSD License',  # 保留BSD以表示双重许可
         'Operating System :: MacOS',
         'Operating System :: POSIX :: BSD',
         'Operating System :: POSIX :: Linux',

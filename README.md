@@ -168,7 +168,18 @@ python -m pytest termcap/tests/
 
 ## License
 
-BSD 3-clause license (same as original termtosvg)
+This project is dual-licensed:
+
+- **MIT License** - For new termcap features and enhancements (see [LICENSE-MIT](LICENSE-MIT))
+- **BSD 3-Clause License** - For original termtosvg code (see [LICENSE-BSD](LICENSE-BSD))
+
+You may choose either license for your use of this software.
+
+### License Details
+
+- The original termtosvg code by Nicolas Bedos remains under BSD 3-Clause License
+- New termcap features, CLI interface, and enhancements by rexwzh are under MIT License
+- Users can choose to use the software under either license terms
 
 ## Author
 
@@ -177,7 +188,7 @@ BSD 3-clause license (same as original termtosvg)
 
 ## Changelog
 
-### Version 0.1.0
+### Version 0.1.1
 
 - ✅ Rebranded as termcap
 - ✅ Added click-based modern CLI interface
@@ -186,4 +197,5 @@ BSD 3-clause license (same as original termtosvg)
 - ✅ Added template management commands
 - ✅ Maintained full backward compatibility
 - ✅ Improved error handling and user feedback
-- ✅ 56 comprehensive tests ensure reliability
+- ✅ Comprehensive test suite ensures reliability
+- ✅ Added dual licensing (MIT + BSD)
