@@ -6,7 +6,11 @@ import os
 import shlex
 import sys
 import tempfile
-import pkg_resources
+try:
+    from importlib.metadata import version as get_version
+except ImportError:
+    # Fallback for Python < 3.8
+    import pkg_resources
 
 import termcap.config
 import termcap.anim
@@ -14,6 +18,14 @@ import termcap.anim
 logger = logging.getLogger('termcap')
 
 DEFAULT_LOOP_DELAY = 1000
+
+def _get_version():
+    """Get package version using modern importlib.metadata or fallback to pkg_resources"""
+    try:
+        return get_version('termcap')
+    except NameError:
+        # Using pkg_resources fallback
+        return pkg_resources.require('termcap')[0].version
 
 USAGE = """termcap [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY]
                  [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [-h]
@@ -64,7 +76,7 @@ def parse(args, templates, default_template, default_geometry, default_min_dur,
         '-v', '--version',
         action='version',
         version='%(prog)s {}'.format(
-            pkg_resources.require('termcap')[0].version
+            _get_version()
         )
     )
 

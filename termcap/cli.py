@@ -32,8 +32,13 @@ def get_default_settings():
 def main(ctx, version):
     """Terminal capture tool - Record terminal sessions as SVG animations"""
     if version:
-        import pkg_resources
-        version_str = pkg_resources.require('termcap')[0].version
+        try:
+            from importlib.metadata import version as get_version
+            version_str = get_version('termcap')
+        except ImportError:
+            # Fallback for Python < 3.8
+            import pkg_resources
+            version_str = pkg_resources.require('termcap')[0].version
         click.echo(f'termcap {version_str}')
         return
         
