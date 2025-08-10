@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='termcap',
@@ -28,11 +28,12 @@ setup(
         'Topic :: Terminals'
     ],
     python_requires='>=3.5',
-    packages=[
-        'termcap',
-        'termcap.tests'
-    ],
-    scripts=['scripts/termcap'],
+    packages=['termcap'],  # 只包含 termcap 包
+    entry_points={
+        'console_scripts': [
+            'termcap=termcap.cli:main',
+        ],
+    },
     include_package_data=True,
     install_requires=[
         'lxml',

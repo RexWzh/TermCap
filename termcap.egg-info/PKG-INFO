@@ -1,4 +1,4 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.1
 Name: termcap
 Version: 1.1.0
 Summary: Terminal capture tool - Record terminal sessions as SVG animations
@@ -19,25 +19,7 @@ Classifier: Programming Language :: Python :: 3.7
 Classifier: Topic :: System :: Shells
 Classifier: Topic :: Terminals
 Requires-Python: >=3.5
-License-File: LICENSE
-Requires-Dist: lxml
-Requires-Dist: pyte
-Requires-Dist: wcwidth
 Provides-Extra: dev
-Requires-Dist: coverage; extra == "dev"
-Requires-Dist: pylint; extra == "dev"
-Requires-Dist: twine; extra == "dev"
-Requires-Dist: wheel; extra == "dev"
-Dynamic: author
-Dynamic: author-email
-Dynamic: classifier
-Dynamic: description
-Dynamic: home-page
-Dynamic: license
-Dynamic: license-file
-Dynamic: provides-extra
-Dynamic: requires-dist
-Dynamic: requires-python
-Dynamic: summary
+License-File: LICENSE
 
 A Linux terminal recorder written in Python which renders your command line sessions as standalone SVG animations.

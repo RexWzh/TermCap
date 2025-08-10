@@ -41,11 +41,6 @@ def main(ctx, version):
             version_str = pkg_resources.require('termcap')[0].version
         click.echo(f'termcap {version_str}')
         return
-        
-    if ctx.invoked_subcommand is None:
-        # Legacy mode: if no subcommand, try to parse as old-style arguments
-        # This maintains compatibility with the original termtosvg interface
-        legacy_main(sys.argv[1:])
 
 
 @main.command()
@@ -54,19 +49,39 @@ def main(ctx, version):
 @click.option('-g', '--geometry', help='Terminal geometry (WIDTHxHEIGHT)')
 def record(output_path, command, geometry):
     """Record a terminal session to a cast file"""
+    import tempfile
+    import shlex
+    from .term import get_terminal_size, TerminalMode, record as term_record
+    
     defaults = get_default_settings()
     
-    # Use legacy record function
-    args = ['termcap', 'record']
-    if output_path:
-        args.append(output_path)
-    if command:
-        args.extend(['-c', command])
+    # Set defaults
+    if command is None:
+        command = defaults['command']
+    if output_path is None:
+        _, output_path = tempfile.mkstemp(prefix='termtosvg_', suffix='.cast')
+    
+    # Parse geometry
     if geometry:
-        args.extend(['-g', geometry])
-        
-    legacy_main(args)
-
+        try:
+            columns, lines = map(int, geometry.split('x'))
+        except ValueError:
+            click.echo(f"Error: Invalid geometry '{geometry}'. Use format like '80x24'", err=True)
+            sys.exit(1)
+    else:
+        columns, lines = get_terminal_size(sys.stdout.fileno())
+    
+    # Record session
+    process_args = shlex.split(command)
+    click.echo(f'Recording started, enter "exit" command or Control-D to end')
+    
+    with TerminalMode(sys.stdin.fileno()):
+        records = term_record(process_args, columns, lines, sys.stdin.fileno(), sys.stdout.fileno())
+        with open(output_path, 'w') as cast_file:
+            for record_ in records:
+                print(record_.to_json_line(), file=cast_file)
+    
+    click.echo(f'Recording ended, cast file is {output_path}')
 
 @main.command()
 @click.argument('input_file')
@@ -78,21 +93,40 @@ def record(output_path, command, geometry):
 @click.option('-t', '--template', help='SVG template to use')
 def render(input_file, output_path, loop_delay, min_duration, max_duration, still_frames, template):
     """Render a cast file to SVG animation"""
-    args = ['termcap', 'render', input_file]
-    if output_path:
-        args.append(output_path)
-    if loop_delay:
-        args.extend(['-D', str(loop_delay)])
-    if min_duration:
-        args.extend(['-m', str(min_duration)])
-    if max_duration:
-        args.extend(['-M', str(max_duration)])
+    import tempfile
+    from .asciicast import read_records
+    from .term import timed_frames
+    from . import anim
+    
+    defaults = get_default_settings()
+    
+    # Set defaults
+    if template is None:
+        template = defaults['template']
+    if min_duration is None:
+        min_duration = defaults['min_duration']
+    if max_duration is None:
+        max_duration = defaults['max_duration']
+    if loop_delay is None:
+        loop_delay = defaults['loop_delay']
+    
+    if output_path is None:
+        if still_frames:
+            output_path = tempfile.mkdtemp(prefix='termtosvg_')
+        else:
+            _, output_path = tempfile.mkstemp(prefix='termtosvg_', suffix='.svg')
+    
+    # Render
+    click.echo('Rendering started')
+    asciicast_records = read_records(input_file)
+    geometry, frames = timed_frames(asciicast_records, min_duration, max_duration, loop_delay)
+    
     if still_frames:
-        args.append('-s')
-    if template:
-        args.extend(['-t', template])
-        
-    legacy_main(args)
+        anim.render_still_frames(frames=frames, geometry=geometry, directory=output_path, template=template)
+        click.echo(f'Rendering ended, SVG frames are located at {output_path}')
+    else:
+        anim.render_animation(frames, geometry, output_path, template)
+        click.echo(f'Rendering ended, SVG animation is {output_path}')
 
 
 @main.group()
@@ -189,40 +223,6 @@ def template_remove(name):
 def template_list():
     """List all available templates"""
     list_templates()
-
-
-def legacy_main(args):
-    """Run the legacy main function for backward compatibility"""
-    # Import here to avoid circular imports
-    try:
-        # Use the original main function from the old system
-        templates = old_config.default_templates()
-        default_template = 'gjm8'
-        default_geometry = '82x19'
-        default_min_dur = 17
-        default_max_dur = 3000
-        default_cmd = os.environ.get('SHELL', '/bin/bash')
-        default_loop_delay = 1000
-        
-        # Parse and execute using the old system
-        subcommand, parsed_args = old_main.parse(
-            args, templates, default_template, default_geometry,
-            default_min_dur, default_max_dur, default_cmd, default_loop_delay
-        )
-        
-        if subcommand is None:
-            old_main.main(args)
-        elif subcommand == 'record':
-            old_main.record(parsed_args)
-        elif subcommand == 'render':
-            old_main.render(parsed_args)
-            
-    except SystemExit:
-        # Let SystemExit pass through
-        raise
-    except Exception as e:
-        click.echo(f'Error: {e}', err=True)
-        sys.exit(1)
 
 
 if __name__ == '__main__':

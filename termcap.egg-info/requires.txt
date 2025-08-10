@@ -1,6 +1,9 @@
 lxml
 pyte
 wcwidth
+click
+platformdirs
+toml
 
 [dev]
 coverage

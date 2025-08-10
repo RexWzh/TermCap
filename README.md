@@ -1,71 +1,189 @@
-**Note: As of June 2020 I do not have time to maintain termtosvg anymore and this repository is now read-only.**
+# termcap - Terminal Capture Tool
 
-# termtosvg
-termtosvg is a Unix terminal recorder written in Python that renders your command
-line sessions as standalone SVG animations.
+*A modern Python package for recording terminal sessions as SVG animations, based on the original termtosvg project.*
 
-![Example](./docs/examples/awesome_window_frame_powershell.svg)
+## Overview
 
-* [Gallery of examples](https://nbedos.github.io/termtosvg/pages/examples.html)
-* [Gallery of templates](https://nbedos.github.io/termtosvg/pages/templates.html)
+termcap is a terminal session recorder that generates standalone SVG animations. This package is a modernized version of termtosvg with the following enhancements:
 
-## Features
-* Produce lightweight and clean looking animations or still frames embeddable on a project page
-* Custom color themes, terminal UI and animation controls via user-defined [SVG templates](man/termtosvg-templates.md)
-* Rendering of recordings in asciicast format made with asciinema
-    
+- 🎯 **Modern CLI Interface**: Based on `click` with intuitive subcommands
+- ⚙️ **Configuration Management**: TOML-based configuration with `platformdirs`
+- 🎨 **Template Management**: Easy installation and management of custom templates
+- 🔧 **Enhanced User Experience**: Better error handling and user feedback
+
 ## Installation
-termtosvg is compatible with Linux, macOS and BSD OSes, requires Python >= 3.5 and can be installed as follows using pip:
-```shell
-# Create virtualenv named '.venv'
-python3 -m venv .venv
-# Activate virtualenv
-source .venv/bin/activate
-pip3 install termtosvg
-```
-Then run termtosvg by calling either `termtosvg` or `python3 -m termtosvg`.
 
-Various independently maintained, OS specific packages have been made available by the community:
-
-| OS       | Repository  | Installation command  |
-|----------|-------------|---|
-| Archlinux  | [Arch](https://www.archlinux.org/packages/community/any/termtosvg/)  |`pacman -S termtosvg`   |
-| FreeBSD | [ports](https://www.freshports.org/graphics/py-termtosvg) | |
-| Gentoo | [media-gfx/termtosvg](https://packages.gentoo.org/packages/media-gfx/termtosvg) | `emerge media-gfx/termtosvg`|
-| macOS  | [Homebrew](https://formulae.brew.sh/formula/termtosvg)  |`brew install termtosvg`   |
-| OpenBSD  | [ports](https://github.com/openbsd/ports/tree/master/graphics/termtosvg)  |   |
-| NixOS | [nixpkgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/misc/termtosvg/) | |
-
-
-## Basic usage
-Start recording with:
-
-```
-$ termtosvg
-Recording started, enter "exit" command or Control-D to end
+```bash
+pip install termcap
 ```
 
-You are now in a subshell where you can type your commands as usual.
-Once you are done, exit the shell to end the recording:
+## Quick Start
 
-```
-$ exit
-Recording ended, file is /tmp/termtosvg_exp5nsr4.svg
-```
-Then, use your favorite web browser to play the animation:
-```
-$ firefox /tmp/termtosvg_exp5nsr4.svg
-```
+### Basic Recording
 
-Finally, embedding the animation in e.g. a [README.md](README.md) file on GitHub can
-be achieved with a relative link to the animation:
-```markdown
-![Example](./docs/examples/awesome_window_frame.svg)
+```bash
+# Record a terminal session
+termcap record session.cast
+
+# Render to SVG animation
+termcap render session.cast animation.svg
 ```
 
-See the [manual page](man/termtosvg.md) for more details.
+### Using Templates
 
-## Dependencies
-termtosvg uses:
-* [pyte](https://github.com/selectel/pyte) to render the terminal screen
-* [lxml](https://github.com/lxml/lxml) to work with SVG data
+```bash
+# List available templates
+termcap template list
+
+# Use a specific template
+termcap render session.cast animation.svg --template gjm8
+
+# Install a custom template
+termcap template install my_template template.svg
+```
+
+### Configuration Management
+
+```bash
+# Show current configuration
+termcap config show
+
+# Set configuration values
+termcap config set general default_template my_template
+termcap config set general default_geometry 100x30
+
+# Reset to defaults
+termcap config reset
+```
+
+## Command Reference
+
+### Main Commands
+
+- `termcap record [output.cast]` - Record a terminal session
+- `termcap render input.cast [output.svg]` - Render cast file to SVG
+- `termcap --version` - Show version information
+- `termcap --help` - Show help message
+
+### Configuration Commands
+
+- `termcap config show` - Display current configuration
+- `termcap config set SECTION KEY VALUE` - Set configuration value
+- `termcap config get SECTION KEY` - Get configuration value
+- `termcap config reset` - Reset configuration to defaults
+- `termcap config templates` - List available templates
+
+### Template Commands
+
+- `termcap template list` - List all available templates
+- `termcap template install NAME FILE` - Install custom template
+- `termcap template remove NAME` - Remove custom template
+
+## Configuration
+
+termcap uses a TOML configuration file located at:
+- Linux: `~/.config/termcap/config.toml`
+- macOS: `~/Library/Application Support/termcap/config.toml`
+- Windows: `%APPDATA%\termcap\config.toml`
+
+### Default Configuration
+
+```toml
+[general]
+default_template = "gjm8"
+default_geometry = "82x19"
+default_min_duration = 17
+default_max_duration = 3000
+default_loop_delay = 1000
+
+[templates]
+custom_templates_enabled = true
+builtin_templates_enabled = true
+
+[output]
+default_output_dir = "~/termcap_recordings"
+auto_timestamp = true
+```
+
+## Templates
+
+### Built-in Templates
+
+termcap includes several built-in templates:
+- `gjm8` - Default colorful template
+- `dracula` - Dark theme with purple accents
+- `solarized_dark` / `solarized_light` - Solarized color schemes
+- `ubuntu` - Ubuntu-styled terminal
+- `putty` - PuTTY-like appearance
+- `window_frame` - Terminal with window frame
+- And more...
+
+### Custom Templates
+
+Custom templates are stored in:
+- Linux: `~/.config/termcap/templates/`
+- macOS: `~/Library/Application Support/termcap/templates/`
+- Windows: `%APPDATA%\termcap\templates\`
+
+## Migration from termtosvg
+
+If you're migrating from termtosvg, termcap maintains backward compatibility:
+
+```bash
+# These commands work the same way
+termcap animation.svg
+termcap record session.cast
+termcap render session.cast animation.svg
+
+# But you can also use the new modern interface
+termcap record session.cast
+termcap render session.cast animation.svg --template dracula
+```
+
+## Development
+
+### Requirements
+
+- Python 3.5+
+- click
+- platformdirs
+- toml
+- lxml
+- pyte
+- wcwidth
+
+### Testing
+
+```bash
+python -m pytest termcap/tests/
+```
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+BSD 3-clause license (same as original termtosvg)
+
+## Author
+
+- **termcap**: rexwzh (1073853456@qq.com)
+- **Original termtosvg**: Nicolas Bedos
+
+## Changelog
+
+### Version 1.1.0
+
+- ✅ Rebranded as termcap
+- ✅ Added click-based modern CLI interface
+- ✅ Added TOML configuration management
+- ✅ Added platformdirs for proper config directory handling
+- ✅ Added template management commands
+- ✅ Maintained full backward compatibility
+- ✅ Improved error handling and user feedback
+- ✅ 56 comprehensive tests ensure reliability

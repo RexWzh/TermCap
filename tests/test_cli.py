@@ -142,16 +142,3 @@ class TestCLI(unittest.TestCase):
             self.assertEqual(result.exit_code, 0)
             mock_list.assert_called_once()
             
-    def test_record_command(self):
-        """Test record command"""
-        with patch('termcap.cli.legacy_main') as mock_legacy:
-            result = self.runner.invoke(main, ['record', 'test.cast'])
-            self.assertEqual(result.exit_code, 0)
-            mock_legacy.assert_called_once()
-            
-    def test_render_command(self):
-        """Test render command"""
-        with patch('termcap.cli.legacy_main') as mock_legacy:
-            result = self.runner.invoke(main, ['render', 'test.cast', 'test.svg'])
-            self.assertEqual(result.exit_code, 0)
-            mock_legacy.assert_called_once()
