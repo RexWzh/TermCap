@@ -7,7 +7,7 @@ name = "termcap"
 version = "0.1.1"
 description = "Terminal capture tool - Record terminal sessions as SVG animations"
 readme = "README.md"
-requires-python = ">=3.5"
+requires-python = ">=3.8"
 license = { text = "MIT License" }
 authors = [
     { name = "rexwzh", email = "1073853456@qq.com" }
@@ -20,9 +20,10 @@ classifiers = [
     "Operating System :: POSIX :: BSD",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.5",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: System :: Shells",
     "Topic :: Terminals",
 ]
@@ -33,6 +34,7 @@ dependencies = [
     "click",
     "platformdirs",
     "toml",
+    "rich",
 ]
 
 [project.optional-dependencies]

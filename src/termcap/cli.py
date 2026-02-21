@@ -2,9 +2,14 @@
 import click
 import sys
 import os
+import time
 import tempfile
 import shlex
 from pathlib import Path
+from rich.console import Console
+from rich.live import Live
+from rich.spinner import Spinner
+from rich.progress import Progress, TextColumn, BarColumn, TimeRemainingColumn
 
 from termcap.config import get_config_manager
 from termcap.cli_config import show_config, list_templates, reset_config
@@ -65,15 +70,31 @@ def record(output_path, command, geometry):
         columns, lines = get_terminal_size(sys.stdout.fileno())
     
     process_args = shlex.split(command)
-    click.echo(f'Recording started, enter "exit" command or Control-D to end')
+    console = Console()
+    console.print(f'Recording started, enter "exit" command or Control-D to end')
+    
+    start_time = time.time()
+    count = 0
     
     with TerminalMode(sys.stdin.fileno()):
         records = record_session(process_args, columns, lines, sys.stdin.fileno(), sys.stdout.fileno())
         with open(output_path, 'w') as cast_file:
-            for record_ in records:
-                print(record_.to_json_line(), file=cast_file)
+            # First record is header
+            header = next(records)
+            print(header.to_json_line(), file=cast_file)
+            
+            # Use Live display for spinner
+            spinner = Spinner('dots', text='已录制 0 个事件...')
+            with Live(spinner, refresh_per_second=10, transient=True) as live:
+                for record_ in records:
+                    print(record_.to_json_line(), file=cast_file)
+                    count += 1
+                    spinner.text = f'已录制 {count} 个事件...'
     
-    click.echo(f'Recording ended, cast file is {output_path}')
+    duration = time.time() - start_time
+    console.print(f'✓ 录制完成，时长: {duration:.1f}秒，共 {count} 个事件')
+    console.print(f'⠹ 录制完成')
+    console.print(f'Recording ended, cast file is {output_path}')
 
 @main.command()
 @click.argument('input_file')
@@ -102,9 +123,10 @@ def render(input_file, output_path, loop_delay, min_duration, max_duration, stil
         else:
             _, output_path = tempfile.mkstemp(prefix='termcap_', suffix='.svg')
     
-    click.echo('Rendering started')
+    console = Console()
+    # click.echo('Rendering started')
     
-    # We need to read records twice: once for header, then for events.
+    # We need to read records twice
     # But read_records yields header first.
     # `render_animation` expects an iterator.
     
@@ -116,16 +138,20 @@ def render(input_file, output_path, loop_delay, min_duration, max_duration, stil
         sys.exit(1)
         
     if still_frames:
-        render_still_frames(
-            records_iter, header, output_path, template,
-            min_duration, max_duration, loop_delay
-        )
+        with console.status("正在渲染 SVG...", spinner="dots"):
+            render_still_frames(
+                records_iter, header, output_path, template,
+                min_duration, max_duration, loop_delay
+            )
+        console.print(f'✓ 渲染完成')
         click.echo(f'Rendering ended, SVG frames are located at {output_path}')
     else:
-        render_animation(
-            records_iter, header, output_path, template,
-            min_duration, max_duration, loop_delay
-        )
+        with console.status("正在渲染 SVG...", spinner="dots"):
+            render_animation(
+                records_iter, header, output_path, template,
+                min_duration, max_duration, loop_delay
+            )
+        console.print(f'✓ 渲染完成')
         click.echo(f'Rendering ended, SVG animation is {output_path}')
 
 @main.group()
