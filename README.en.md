@@ -18,7 +18,7 @@
 
 ## Install
 
-TermCap is compatible with Linux, macOS and BSD OSes, requires Python >= 3.8 and can be installed using pip:
+TermCap works on Linux, macOS and BSD, and requires Python >= 3.8.
 
 ```bash
 pip3 install --user termcap
