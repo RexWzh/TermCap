@@ -4,29 +4,29 @@
 [![Deploy Docs](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml)
 [![PyPI](https://img.shields.io/pypi/v/termcap.svg)](https://pypi.org/project/termcap/)
 
-**TermCap** 是一个用 Python 编写的 Unix 终端录制工具，可以将你的命令行会话渲染为独立的 SVG 动画。
+**TermCap** is a Unix terminal recorder written in Python that renders your command line sessions as standalone SVG animations.
 
-## 特性
+## Features
 
-- 生成轻量级且外观整洁的动画，可嵌入到项目页面中
-- 通过 [SVG 模板](docs/manual/termcap-templates.md) 支持自定义颜色主题、终端 UI 和动画控制
-- 兼容 asciinema 录制格式
+- Produce lightweight and clean looking animations embeddable on a project page
+- Custom color themes, terminal UI and animation controls via [SVG templates](docs/manual/termcap-templates.en.md)
+- Compatible with asciinema recording format
 
 <p align="center">
     <img src="docs/examples/awesome_window_frame_js.svg" width="80%">
 </p>
 
-## 安装
+## Install
 
-TermCap 兼容 Linux、macOS 和 BSD 操作系统，需要 Python >= 3.8，可以使用 pip 安装：
+TermCap is compatible with Linux, macOS and BSD OSes, requires Python >= 3.8 and can be installed using pip:
 
 ```bash
 pip3 install --user termcap
 ```
 
-## 使用方法
+## Usage
 
-只需使用以下命令开始录制终端会话：
+Simply start recording a terminal session with:
 
 ```bash
 $ termcap record
@@ -34,8 +34,8 @@ Recording started.
 Enter "exit" command or Control-D to end.
 ```
 
-现在你处于一个子 shell 中，可以像往常一样输入命令。
-完成后，退出 shell 即可结束录制：
+You are now in a subshell where you can type your commands as usual.
+Once you are done, exit the shell to end the recording:
 
 ```bash
 $ exit
@@ -43,7 +43,7 @@ $ exit
 Recording ended, cast file is /tmp/termcap_exp5nsr4.cast
 ```
 
-最后，使用以下命令将录制内容渲染为 SVG 动画：
+Finally, render the recording to an SVG animation:
 
 ```bash
 $ termcap render /tmp/termcap_exp5nsr4.cast animation.svg
@@ -52,16 +52,16 @@ Rendering started
 Rendering ended, SVG animation is animation.svg
 ```
 
-你也可以使用你喜欢的 Web 浏览器播放动画：
+You can then use your favorite web browser to play the animation:
 
 ```bash
 $ firefox animation.svg
 ```
 
-## 许可证
+## License
 
 **MIT License**
 
-## 作者
+## Author
 
 - **termcap**: rexwzh (1073853456@qq.com)

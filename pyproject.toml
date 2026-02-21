@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "termcap"
-version = "0.1.1"
+dynamic = ["version"]
 description = "Terminal capture tool - Record terminal sessions as SVG animations"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -71,3 +71,6 @@ include-package-data = true
 
 [tool.setuptools.package-data]
 termcap = ["data/*.dtd"]
+
+[tool.setuptools.dynamic]
+version = {attr = "termcap.__version__"}
