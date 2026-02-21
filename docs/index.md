@@ -14,7 +14,7 @@
 
 ## 安装
 
-TermCap 兼容 Linux、macOS 和 BSD 操作系统，需要 Python >= 3.5，可以使用 pip 安装：
+TermCap 兼容 Linux、macOS 和 BSD 操作系统，需要 Python >= 3.8，可以使用 pip 安装：
 
 ```bash
 pip3 install --user termcap

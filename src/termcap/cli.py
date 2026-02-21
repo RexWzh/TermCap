@@ -7,10 +7,7 @@ import tempfile
 import shlex
 from pathlib import Path
 from rich.console import Console
-from rich.live import Live
 from rich.panel import Panel
-from rich.spinner import Spinner
-from rich.progress import Progress, TextColumn, BarColumn, TimeRemainingColumn
 
 from termcap.config import get_config_manager
 from termcap.cli_config import show_config, list_templates, reset_config
