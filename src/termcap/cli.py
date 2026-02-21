@@ -8,6 +8,7 @@ import shlex
 from pathlib import Path
 from rich.console import Console
 from rich.live import Live
+from rich.panel import Panel
 from rich.spinner import Spinner
 from rich.progress import Progress, TextColumn, BarColumn, TimeRemainingColumn
 
@@ -71,7 +72,12 @@ def record(output_path, command, geometry):
     
     process_args = shlex.split(command)
     console = Console()
-    console.print(f'Recording started, enter "exit" command or Control-D to end')
+    
+    console.print(Panel(
+        f'Recording started.\nEnter "exit" command or Control-D to end.',
+        title="TermCap Recorder",
+        border_style="green"
+    ))
     
     start_time = time.time()
     count = 0
@@ -83,17 +89,12 @@ def record(output_path, command, geometry):
             header = next(records)
             print(header.to_json_line(), file=cast_file)
             
-            # Use Live display for spinner
-            spinner = Spinner('dots', text='已录制 0 个事件...')
-            with Live(spinner, refresh_per_second=10, transient=True) as live:
-                for record_ in records:
-                    print(record_.to_json_line(), file=cast_file)
-                    count += 1
-                    spinner.text = f'已录制 {count} 个事件...'
+            for record_ in records:
+                print(record_.to_json_line(), file=cast_file)
+                count += 1
     
     duration = time.time() - start_time
     console.print(f'✓ 录制完成，时长: {duration:.1f}秒，共 {count} 个事件')
-    console.print(f'⠹ 录制完成')
     console.print(f'Recording ended, cast file is {output_path}')
 
 @main.command()
