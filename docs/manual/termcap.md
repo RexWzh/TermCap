@@ -3,11 +3,11 @@
 % 2025年2月
 
 ## 概要
-**termcap** [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [--help]
-
 **termcap record** [output_path] [-c COMMAND] [-g GEOMETRY] [-h]
 
-**termcap render** *input_file* [output_path] [-D DELAY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [-h]
+**termcap render** *input_file* [output_path] [-D DELAY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [--help]
+
+**termcap** [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [--help]
 
 ### 描述
 termcap 将终端会话录制为动画 SVG 格式。

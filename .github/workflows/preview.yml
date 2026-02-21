@@ -1,0 +1,80 @@
+name: Preview Docs
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.head.repo.fork }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      
+      - uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+            
+      - run: pip install .[docs]
+      
+      # Install mike for versioned docs/previews
+      - run: pip install mike
+      
+      - run: |
+          git fetch origin
+          # Deploy preview to gh-pages under 'dev' directory or PR number
+          # Using 'dev' for simplicity as in reference, but PR number is better for multiple PRs
+          # Reference used 'dev', so let's stick to reference or improve? 
+          # Reference: mike deploy dev -p --allow-empty
+          mike deploy dev -p --allow-empty
+          
+          # Note: Real preview usually uses PR number like: mike deploy preview-${{ github.event.pull_request.number }} -p --allow-empty
+          # But let's follow the reference for now which uses 'dev'.
+          
+      - name: Comment PR with Preview Link
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { payload } = context;
+            const prNumber = payload.number;
+            // You should update this URL to your actual GitHub Pages URL
+            const baseUrl = 'https://rexwzh.github.io/termcap'; 
+            const previewLink = `${baseUrl}/dev/`;
+            
+            const comments = await github.rest.issues.listComments({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const existingComment = comments.data.find(comment => comment.body.includes(previewLink));
+            
+            if (!existingComment) {
+              await github.rest.issues.createComment({
+                issue_number: prNumber,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `Preview available at: ${previewLink}`
+              });
+            }

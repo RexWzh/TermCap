@@ -3,11 +3,11 @@
 % February 2025
 
 ## SYNOPSIS
-**termcap** [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [--help]
-
 **termcap record** [output_path] [-c COMMAND] [-g GEOMETRY] [-h]
 
-**termcap render** *input_file* [output_path] [-D DELAY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [-h]
+**termcap render** *input_file* [output_path] [-D DELAY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [--help]
+
+**termcap** [output_path] [-c COMMAND] [-D DELAY] [-g GEOMETRY] [-m MIN_DURATION] [-M MAX_DURATION] [-s] [-t TEMPLATE] [--help]
 
 ### DESCRIPTION
 termcap makes recordings of terminal sessions in animated SVG format.

@@ -25,8 +25,9 @@ pip3 install --user termcap
 只需使用以下命令开始录制终端会话：
 
 ```bash
-$ termcap
-Recording started, enter "exit" command or Control-D to end
+$ termcap record
+Recording started.
+Enter "exit" command or Control-D to end.
 ```
 
 现在你处于一个子 shell 中，可以像往常一样输入命令。
@@ -34,11 +35,21 @@ Recording started, enter "exit" command or Control-D to end
 
 ```bash
 $ exit
-Recording ended, file is /tmp/termcap_exp5nsr4.svg
+✓ 录制完成，时长: 10.5秒，共 42 个事件
+Recording ended, cast file is /tmp/termcap_exp5nsr4.cast
 ```
 
-最后，使用你喜欢的 Web 浏览器播放动画：
+最后，使用以下命令将录制内容渲染为 SVG 动画：
 
 ```bash
-$ firefox /tmp/termcap_exp5nsr4.svg
+$ termcap render /tmp/termcap_exp5nsr4.cast animation.svg
+Rendering started
+✓ 渲染完成
+Rendering ended, SVG animation is animation.svg
+```
+
+你也可以使用你喜欢的 Web 浏览器播放动画：
+
+```bash
+$ firefox animation.svg
 ```

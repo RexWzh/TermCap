@@ -46,6 +46,16 @@ dev = [
     "pytest",
     "pytest-cov",
     "build",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-minify-plugin",
+    "mkdocs-static-i18n",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-minify-plugin",
+    "mkdocs-static-i18n",
 ]
 
 [project.urls]

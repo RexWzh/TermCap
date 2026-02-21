@@ -25,8 +25,9 @@ pip3 install --user termcap
 Simply start recording a terminal session with:
 
 ```bash
-$ termcap
-Recording started, enter "exit" command or Control-D to end
+$ termcap record
+Recording started.
+Enter "exit" command or Control-D to end.
 ```
 
 You are now in a subshell where you can type your commands as usual.
@@ -34,11 +35,21 @@ Once you are done, exit the shell to end the recording:
 
 ```bash
 $ exit
-Recording ended, file is /tmp/termcap_exp5nsr4.svg
+✓ 录制完成，时长: 10.5秒，共 42 个事件
+Recording ended, cast file is /tmp/termcap_exp5nsr4.cast
 ```
 
-Finally, use your favorite web browser to play the animation:
+Finally, render the recording to an SVG animation:
 
 ```bash
-$ firefox /tmp/termcap_exp5nsr4.svg
+$ termcap render /tmp/termcap_exp5nsr4.cast animation.svg
+Rendering started
+✓ 渲染完成
+Rendering ended, SVG animation is animation.svg
+```
+
+You can then use your favorite web browser to play the animation:
+
+```bash
+$ firefox animation.svg
 ```
