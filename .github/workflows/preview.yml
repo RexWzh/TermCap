@@ -59,7 +59,7 @@ jobs:
             const { payload } = context;
             const prNumber = payload.number;
             // You should update this URL to your actual GitHub Pages URL
-            const baseUrl = 'https://rexwzh.github.io/termcap'; 
+            const baseUrl = 'https://termcap.wzhecnu.cn'; 
             const previewLink = `${baseUrl}/dev/`;
             
             const comments = await github.rest.issues.listComments({

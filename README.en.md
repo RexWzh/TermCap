@@ -1,7 +1,7 @@
 # TermCap
 
-[![CI](https://github.com/rexwzh/termcap/actions/workflows/ci.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/ci.yml)
-[![Deploy Docs](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml)
+[![Test](https://github.com/rexwzh/termcap/actions/workflows/ci.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/ci.yml)
+[![Docs](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml/badge.svg)](https://termcap.wzhecnu.cn)
 [![PyPI](https://img.shields.io/pypi/v/termcap.svg)](https://pypi.org/project/termcap/)
 
 **TermCap** is a Unix terminal recorder written in Python that renders your command line sessions as standalone SVG animations.

@@ -1,7 +1,7 @@
 # TermCap
 
-[![CI](https://github.com/rexwzh/termcap/actions/workflows/ci.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/ci.yml)
-[![Deploy Docs](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml)
+[![Test](https://github.com/rexwzh/termcap/actions/workflows/ci.yml/badge.svg)](https://github.com/rexwzh/termcap/actions/workflows/ci.yml)
+[![Docs](https://github.com/rexwzh/termcap/actions/workflows/deploy.yml/badge.svg)](https://termcap.wzhecnu.cn)
 [![PyPI](https://img.shields.io/pypi/v/termcap.svg)](https://pypi.org/project/termcap/)
 
 **TermCap** 是一个用 Python 编写的 Unix 终端录制工具，可以将你的命令行会话渲染为独立的 SVG 动画。
