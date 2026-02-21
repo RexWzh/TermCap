@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://termcap.wzhecnu.cn/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/templates/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/templates/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/templates/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/examples/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/examples/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/examples/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/manual/termcap-templates/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/manual/termcap-templates/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/manual/termcap-templates/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/manual/termcap/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/manual/termcap/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/manual/termcap/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/en/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/en/templates/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/templates/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/templates/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/en/examples/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/examples/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/examples/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/en/manual/termcap-templates/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/manual/termcap-templates/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/manual/termcap-templates/"/>
+    </url>
+    <url>
+        <loc>https://termcap.wzhecnu.cn/en/manual/termcap/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://termcap.wzhecnu.cn/en/manual/termcap/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://termcap.wzhecnu.cn/manual/termcap/"/>
+    </url>
+</urlset>
