@@ -1,5 +1,5 @@
 import sys
-import tempfile
+from pathlib import Path
 
 import click
 from rich.console import Console
@@ -31,10 +31,11 @@ def register_render_command(main):
             loop_delay = defaults["loop_delay"]
 
         if output_path is None:
+            input_path = Path(input_file)
             if still_frames:
-                output_path = tempfile.mkdtemp(prefix="termcap_")
+                output_path = str(input_path.parent / f"{input_path.stem}_frames")
             else:
-                _, output_path = tempfile.mkstemp(prefix="termcap_", suffix=".svg")
+                output_path = str(input_path.with_suffix(".svg"))
 
         console = Console()
         records_iter = read_records(input_file)
