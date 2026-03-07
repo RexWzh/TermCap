@@ -66,8 +66,11 @@ termcap = "termcap.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["termcap"]
 include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["termcap*"]
 
 [tool.setuptools.package-data]
 termcap = ["data/*.dtd"]
