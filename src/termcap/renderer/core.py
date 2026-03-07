@@ -14,6 +14,10 @@ from termcap.renderer import svg, theme
 CELL_WIDTH = 8
 CELL_HEIGHT = 17
 FRAME_CELL_SPACING = 1
+_COLORS = ["black", "red", "green", "brown", "blue", "magenta", "cyan", "white"]
+_BRIGHT_COLORS = [f"bright{color}" for color in _COLORS]
+NAMED_COLORS = _COLORS + _BRIGHT_COLORS
+pyte.graphics.FG_BG_256 = NAMED_COLORS + pyte.graphics.FG_BG_256[16:]
 
 TimedFrame = namedtuple('TimedFrame', ['time', 'duration', 'buffer'])
 
@@ -253,24 +257,39 @@ def _screen_buffer(screen):
     return buffer
 
 def _char_to_cell(char):
-    # Mapping logic for colors
-    fg = char.fg
-    bg = char.bg
-    
-    # Simplify color mapping for now
-    if fg == 'default': fg = 'foreground'
-    elif fg in svg.CharacterCell._fields: pass 
-    
-    if bg == 'default': bg = 'background'
-    
-    # Handle reverse
+    if char.fg == "default":
+        text_color = "foreground"
+    else:
+        if char.bold and not str(char.fg).startswith("bright"):
+            named_color = f"bright{char.fg}"
+        else:
+            named_color = char.fg
+
+        if named_color in NAMED_COLORS:
+            text_color = f"color{NAMED_COLORS.index(named_color)}"
+        elif len(str(char.fg)) == 6:
+            int(str(char.fg), 16)
+            text_color = f"#{char.fg}"
+        else:
+            raise ValueError(f"Invalid foreground color: {char.fg}")
+
+    if char.bg == "default":
+        background_color = "background"
+    elif char.bg in NAMED_COLORS:
+        background_color = f"color{NAMED_COLORS.index(char.bg)}"
+    elif len(str(char.bg)) == 6:
+        int(str(char.bg), 16)
+        background_color = f"#{char.bg}"
+    else:
+        raise ValueError(f"Invalid background color: {char.bg}")
+
     if char.reverse:
-        fg, bg = bg, fg
-        
+        text_color, background_color = background_color, text_color
+
     return svg.CharacterCell(
         text=char.data,
-        color=str(fg),
-        background_color=str(bg),
+        color=text_color,
+        background_color=background_color,
         bold=char.bold,
         italics=char.italics,
         underscore=char.underscore,

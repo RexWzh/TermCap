@@ -39,7 +39,7 @@ def test_char_to_cell():
     
     cell = core._char_to_cell(mock_char)
     assert cell.text == 'a'
-    assert cell.color == 'red'
+    assert cell.color == 'color9'
     assert cell.background_color == 'background'
     assert cell.bold is True
 
