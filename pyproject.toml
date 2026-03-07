@@ -73,7 +73,7 @@ where = ["src"]
 include = ["termcap*"]
 
 [tool.setuptools.package-data]
-termcap = ["data/*.dtd"]
+termcap = ["data/*.dtd", "data/templates/*.svg"]
 
 [tool.setuptools.dynamic]
 version = {attr = "termcap.__version__"}

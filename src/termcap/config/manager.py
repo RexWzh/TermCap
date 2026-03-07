@@ -15,6 +15,7 @@ class ConfigManager:
         self.config_file = get_config_file()
         self.templates_dir = get_templates_dir()
         self._config = None
+        self._bootstrap_templates()
         
     def load_config(self) -> Dict[str, Any]:
         """Load configuration from config.toml"""
@@ -76,18 +77,19 @@ class ConfigManager:
         """Get all available templates (builtin + custom)"""
         templates = {}
         
-        # Add builtin templates if enabled
         config = self.load_config()
         if config.get("templates", {}).get("builtin_templates_enabled", True):
             for name in DEFAULT_TEMPLATES_NAMES:
                 template_name = name.replace('.svg', '')
-                templates[template_name] = None  # Builtin templates don't have file paths yet
-                
-        # Add custom templates if enabled
+                if self._get_builtin_template_content(template_name) is not None:
+                    templates[template_name] = None
+
         if config.get("templates", {}).get("custom_templates_enabled", True):
             if self.templates_dir.exists():
                 for template_file in self.templates_dir.glob("*.svg"):
                     name = template_file.stem
+                    if name in templates:
+                        continue
                     templates[name] = template_file
                     
         return templates
@@ -101,15 +103,38 @@ class ConfigManager:
         path = templates[name]
         if path:
             return path.read_bytes()
-        else:
-            # Builtin template
-            # Try to load from package data
-            # Assuming 'termcap' is the package and 'data/templates' is the resource path
-            # The template name might need .svg extension
-            filename = f"{name}.svg"
-            if filename in DEFAULT_TEMPLATES_NAMES:
-                return pkgutil.get_data('termcap', f'data/templates/{filename}')
+        return self._get_builtin_template_content(name)
+
+    def _get_builtin_template_content(self, name: str) -> Optional[bytes]:
+        filename = f"{name}.svg"
+        if filename not in DEFAULT_TEMPLATES_NAMES:
             return None
+
+        try:
+            data = pkgutil.get_data("termcap", f"data/templates/{filename}")
+        except FileNotFoundError:
+            data = None
+        if data:
+            return data
+
+        dev_template = self._get_dev_template_path() / filename
+        if dev_template.exists():
+            return dev_template.read_bytes()
+        return None
+
+    def _get_dev_template_path(self) -> Path:
+        return Path(__file__).resolve().parents[3] / "docs" / "examples"
+
+    def _bootstrap_templates(self):
+        self.templates_dir.mkdir(parents=True, exist_ok=True)
+        for template_name in DEFAULT_TEMPLATES_NAMES:
+            template_stem = template_name.replace(".svg", "")
+            target = self.templates_dir / template_name
+            if target.exists():
+                continue
+            data = self._get_builtin_template_content(template_stem)
+            if data:
+                target.write_bytes(data)
 
     def install_custom_template(self, name: str, template_path: Path):
         """Install a custom template"""

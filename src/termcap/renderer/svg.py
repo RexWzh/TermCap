@@ -9,6 +9,7 @@ from typing import NamedTuple, List, Dict, Any, Tuple
 # XML namespaces
 SVG_NS = 'http://www.w3.org/2000/svg'
 TERMCAP_NS = 'https://github.com/rexwzh/termcap'
+TERMTOSVG_NS = 'https://github.com/nbedos/termtosvg'
 XLINK_NS = 'http://www.w3.org/1999/xlink'
 
 class TemplateError(Exception):
@@ -138,11 +139,18 @@ def resize_template(template_content: bytes, columns: int, rows: int, cell_width
     except etree.Error as exc:
         raise TemplateError('Invalid template') from exc
 
+    settings_ns = None
     settings = root.find(f'.//{{{SVG_NS}}}defs/{{{TERMCAP_NS}}}template_settings')
+    if settings is not None:
+        settings_ns = TERMCAP_NS
+    if settings is None:
+        settings = root.find(f'.//{{{SVG_NS}}}defs/{{{TERMTOSVG_NS}}}template_settings')
+        if settings is not None:
+            settings_ns = TERMTOSVG_NS
     if settings is None:
         raise TemplateError('Missing "template_settings"')
 
-    svg_geometry = settings.find(f'{{{TERMCAP_NS}}}screen_geometry')
+    svg_geometry = settings.find(f'{{{settings_ns}}}screen_geometry')
     if svg_geometry is None:
         raise TemplateError('Missing "screen_geometry"')
 
